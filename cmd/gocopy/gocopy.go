@@ -32,7 +32,6 @@ func main() {
 		panic(err)
 	}
 	if *verbose {
-		fmt.Println(out, []byte(out))
 		fmt.Printf("wrote %d bytes to clipboard\n", len(out))
 	}
 
