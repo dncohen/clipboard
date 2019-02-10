@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"strings"
 	"time"
@@ -12,6 +12,8 @@ import (
 )
 
 func main() {
+	log.SetPrefix("gocopy: ")
+
 	timeout := flag.Duration("t", 0, "Erase clipboard after timeout.  Durations are specified like \"20s\" or \"2h45m\".  0 (default) means never erase.")
 	verbose := flag.Bool("v", false, "Verbose output.")
 	trim := flag.Bool("trim", false, "Trim whitespace.")
@@ -32,7 +34,7 @@ func main() {
 		panic(err)
 	}
 	if *verbose {
-		fmt.Printf("wrote %d bytes to clipboard\n", len(out))
+		log.Printf("wrote %d bytes to clipboard\n", len(out))
 	}
 
 	if timeout != nil && *timeout > 0 {
@@ -43,6 +45,7 @@ func main() {
 		}
 		if text == out {
 			err = clipboard.WriteAll("")
+			log.Printf("cleared clipboard")
 		}
 	}
 	if err != nil {
