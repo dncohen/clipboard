@@ -36,18 +36,20 @@ var (
 	missingCommands = errors.New("No clipboard utilities available. Please install xsel, xclip, or Termux:API add-on for termux-clipboard-get/set.")
 )
 
+// Function init() determines which clipboard utility to use.
 func init() {
-	pasteCmdArgs = xclipPasteArgs
-	copyCmdArgs = xclipCopyArgs
-
-	if _, err := exec.LookPath(xclip); err == nil {
-		return
-	}
-
+	// use `xsel` if installed
 	pasteCmdArgs = xselPasteArgs
 	copyCmdArgs = xselCopyArgs
 
 	if _, err := exec.LookPath(xsel); err == nil {
+		return
+	}
+
+	pasteCmdArgs = xclipPasteArgs
+	copyCmdArgs = xclipCopyArgs
+
+	if _, err := exec.LookPath(xclip); err == nil {
 		return
 	}
 
